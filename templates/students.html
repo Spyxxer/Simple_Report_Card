@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ class_name }} Students</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1 id="class">{{ class_name }}</h1>
+    <ul>
+        {% for i in range(students|length)%}
+            <div class="students-container">
+                <li class="student-names">
+                    <label class='student-name'>{{ students[i] }}</label>
+                    <button class="student-details" data-id="{{students_id[i]}}">
+                    Edit Report Card</button>
+                    <button class="student-details" data-id="{{students_id[i]}}">
+                    View Report Card</button>
+                </li>
+            </div>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('view_classes')}}" id="backf-button">Back</a>
+    <script type="text/javascript" defer>
+        const names = document.querySelectorAll('.student-name');
+        let details = []; let part = [];
+        const class_name = document.getElementById('class').innerText;
+       
+        
+        document.querySelectorAll('.student-details').forEach(function(d){
+            part.push(d);
+            if(part.length % 2 == 0){
+                details.push(part); part = [];
+            }
+        });
+        
+        for(let i = 0; i < names.length; i++){
+            name = names[i].innerText; detail = details[i];
+            edit = detail[0]; view = detail[1];
+            edit.addEventListener('click', function(event){
+                const sId = event.target.dataset.id
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({id: sId})
+                })
+                .then(function (response){
+                    return response.json()
+                })
+                .then(data => {
+                    const Iserror = data["error"]
+                    if (Iserror){
+                        console.log(data["type"])
+                        alert(data["message"]);
+                    }
+                    else{
+                        console.log(data["type"]);
+                        window.location.href = '/login';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+
+            view.addEventListener('click', function(event){
+                const sId = event.target.dataset.id;
+                fetch(`/view_report/${sId}`, {
+                    method:"GET"
+                })
+                window.location.href = '/view_report/' + encodeURIComponent(sId);
+            });
+        }
+        
+    </script>
+</body>
+</html>

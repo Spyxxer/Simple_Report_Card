@@ -1,0 +1,64 @@
+<!-- templates/add_students.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <script type="text/javascript" defer>
+        // Function to fade out and remove flashed messages
+        function removeFlashMessages() {
+            var flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                message.classList.add('fade-out');
+            });
+
+            setTimeout(function() {
+                flashMessages.forEach(function(message) {
+                    message.remove();
+                });
+            }, 500); // Adjust the duration (in milliseconds) as needed
+        }
+        setTimeout(removeFlashMessages, 1500);
+    </script>
+
+</head>
+<body>
+    <div class="container-add">
+        <h1>Student Information Form</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form action="/add_student" method="post" id="student-info">
+            <label for="firstname">Firstname</label>
+            <input type="text" id="firstname" name="firstname" required>
+
+            <label for="lastname">Lastname</label>
+            <input type="text" id="lastname" name="lastname" required>
+
+            <label for="class">Class</label>
+            <input type="text" id="class" name="class" required>
+
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+
+            <a href="{{ url_for('index')}}" id="backf-button">Back</a> 
+            <button type="submit" id="submit-student">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,53 @@
+<!-- templates/edit_reportcard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Report Card</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script type="text/javascript" defer>
+        // Function to fade out and remove flashed messages
+        function removeFlashMessages() {
+            var flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message){
+                message.classList.add('fade-out');
+            });
+
+            setTimeout(function() {
+                flashMessages.forEach(function(message) {
+                    message.remove();
+                });
+            }, 500); // Adjust the duration (in milliseconds) as needed
+        }
+        setTimeout(removeFlashMessages, 3500);
+     </script>
+</head>
+<body>
+    <div class="container-login">
+    	{% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <h1 id="admin">Admin Login</h1>
+        <form action="/login_report" method="post">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" id="submit-admin">Submit</button>
+        </form>
+    </div>
+    <button type="button" id="backc-button">Back</button>
+    <script type="text/javascript" defer>
+        document.getElementById('backc-button').addEventListener('click', function(event){
+            fetch('/classes', function(event){
+                method:'GET'
+            }).then(response => window.location.href = response.url)});
+    </script>
+
+</body>
+</html>

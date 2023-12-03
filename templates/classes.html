@@ -1,0 +1,30 @@
+<!-- templates/classes.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Students</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <script src="{{url_for('static', filename='script.js')}}" defer></script>
+</head>
+<body>
+    <div class=container-classes>
+        <h1 id="main-header">Choose a Class</h1>
+        {% for classname in classnames %}
+            <button class='class-button'>{{classname}}</button>
+        {% endfor %}
+        <a href="{{ url_for('index')}}" id="backc-button">Back</a>
+    </div>
+    <script type="text/javascript">
+        const linktag = document.querySelector('a');
+        linktag.style.marginTop = '12px';
+        linktag.style.textDecoration = 'none';
+        linktag.style.fontSize = '22px';
+        linktag.style.borderRadius = '5px';
+        linktag.style.color = 'ghostwhite';
+        linktag.style.backgroundColor = 'gold';
+        linktag.style.padding = '5px 5px';
+    </script>
+</body>
+</html>

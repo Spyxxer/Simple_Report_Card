@@ -1,0 +1,239 @@
+<!-- templates/student_details.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Link your stylesheet if needed -->
+</head>
+<body>
+    <form method="post" id="edit-form-details1">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <div id="personal-info">
+            <h2 class="edit-info">Personal Information</h2>
+            {% for key, value in student.items() %}
+                <label class="P-info">{{key}}: {{value}}</label>
+            {% endfor %}
+        </div>
+        <div id="academic-info">
+            <h2 class="edit-info">Academic Information</h2>
+            <label class="edit-labels" for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <label class="edit-labels" for="test" >Test</label>
+            <input type="number" id="test" name="test" min="0" max="40" required>
+
+            <label class="edit-labels" for="exam">Exam</label>
+            <input type="number" id="exam" name="exam" min="0" max="60" required>
+        </div>
+    </form>
+    <div id="hide-show">
+        <button type="button" id="submit-score">Submit</button>
+        <div id="switch">
+            <button type="button" id="toogle-switch">O</button>
+        </div>
+    </div>
+    <form method="post" id="edit-form-details2">
+        <div id="performance-info">
+            <h2 class="edit-info">Performance Information</h2>
+            <label class="edit-labels" for="present">No Of Times Present</label>
+            <input type="number" id="present" pattern="\d{1,3}" name="present" max="110" disabled required>
+
+            <label class="edit-labels" for="conduct">Conduct</label>
+            <input type="text" id="conduct" name="conduct" disabled required>
+
+            <label class="edit-labels" for="neatness">Neatness</label>
+            <input type="number" id="neatness" pattern="\d" name="neatness" disabled required>
+
+            <label class="edit-labels" for="class-comment">Class Teacher's Comment</label>
+            <textarea id="class-comment" name="class-comment" rows="2" disabled required></textarea>
+
+            <label class="edit-labels" for="head-comment">Head Teacher's Comment</label>
+            <textarea id="head-comment" name="head-comment" rows="2" disabled required></textarea>
+        </div>
+        <button id="edit-button" type="button" disabled>Edit Student Details</button>
+    </form>
+        <button type="button" id="back-class">Back</button>
+    <script type="text/javascript" defer>
+        const form1 = document.getElementById('academic-info');
+        const form2 = document.getElementById('performance-info');
+        const inputs = document.querySelectorAll('input, textarea');
+        let inputs1 = []; let inputs2 = [];
+
+
+        var isBlurred = true;        
+        const toogle = document.getElementById('toogle-switch');
+        const submitScore = document.getElementById('submit-score');
+        const back = document.getElementById('back-class');
+        const edit_back = document.getElementById('edit-button');
+
+        edit_back.classList.add('disabled-button');
+        form2.classList.add('blurred');
+        toogle.addEventListener('click', event =>{
+            if(isBlurred){
+                submitScore.classList.add('disabled-button');
+                submitScore.disabled = true;
+                toogle.style.backgroundColor = 'orange'; form2.classList.remove('blurred');
+                form1.classList.add('blurred'); isBlurred = false;
+                inputs2.forEach(input =>{
+                    input.disabled = false;
+                });   
+                inputs1.forEach(input =>{
+                    input.disabled = true;
+                });
+                edit_back.classList.remove('disabled-button');
+                edit_back.disabled = false;
+            }
+            else{
+                submitScore.classList.remove('disabled-button');
+                submitScore.disabled = false;
+                toogle.style.backgroundColor = 'purple'; form1.classList.remove('blurred')
+                form2.classList.add('blurred'); isBlurred = true;
+                inputs2.forEach(input=>{
+                    input.disabled = true;
+                })
+                inputs1.forEach(input =>{
+                    input.disabled = false;
+                })
+                edit_back.classList.add('disabled-button');
+            }
+        });
+        
+        for(let i = 0; i < inputs.length; i++){
+            if(i <= 2){
+                inputs1.push(inputs[i]);
+            }
+            else{
+                inputs2.push(inputs[i]);
+            }
+        } 
+
+        const pinfo = document.querySelectorAll('.P-info');
+        
+        
+        back.addEventListener('click', function(event){
+            for(let label of pinfo){
+                let textarr = label.innerText.split(':');
+                if (textarr[0] == 'Class'){
+                    window.location.href = '/class/' + encodeURIComponent(textarr[1].trimStart())
+                }
+            }
+        });
+        const labelName = ['fname', 'lname', 'classname'];
+
+        
+
+        const fieldLabels1 = ['subject', 'test', 'exam'];
+        const fieldLabels2 = ['present', 'conduct', 'neatness', 'cls_comm', 'head_comm'];
+
+
+        submitScore.addEventListener('click', event => {
+            let fieldDict = {};
+            for(let i=0; i < pinfo.length-2; i++){
+                let textarr = pinfo[i].innerText.split(':'); let text = textarr[1].trimStart();
+                fieldDict[labelName[i]] = text;
+            }
+
+            var userResponse = window.confirm("Do you want to submit?");
+            if(userResponse === true){
+                let fieldTexts = [];
+                for(let field of inputs){
+                    fieldTexts.push(field.value);
+                }
+                for(let i=0; i < fieldLabels1.length; i++){
+                    fieldDict[fieldLabels1[i]] = fieldTexts[i];
+                }
+                
+                fetch('/perform_edit',{
+                    method:'POST',
+                    headers : {'Content-Type':'application/json'},
+                    body:JSON.stringify(fieldDict)
+                })
+                .then(response => response.json())
+                .then(data =>{
+                    const Iserror = data["error"];
+                    if(!Iserror){
+                        const sid = data["message"];
+                        console.log("Submitted...");
+                        window.location.href = '/edit_report/' + sid;
+                    }
+                else{
+                    alert(sid);
+                }
+                }).catch(error=> {console.log('Error Type:', error)})
+            }
+            else{
+                inputs1.forEach(input =>{
+                    input.value = ''
+                })
+            }
+        });
+        
+        edit_back.addEventListener('click', function(event){
+            let fieldDict = {};
+            for(let i=0; i < pinfo.length-2; i++){
+                let textarr = pinfo[i].innerText.split(':'); let text = textarr[1].trimStart();
+                fieldDict[labelName[i]] = text;
+            }
+            let fieldTexts = []; fieldDict["type"] = "edit" 
+            var userResponse = window.confirm("Are you sure you want to make changes?");
+            if (userResponse === true){
+                for(let field of inputs2){
+                    fieldTexts.push(field.value);
+                }
+                for(let i=0; i < fieldLabels2.length; i++){
+                    fieldDict[fieldLabels2[i]] = fieldTexts[i];
+                }
+                fetch('/perform_edit',{
+                    method:'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body:JSON.stringify(fieldDict)
+                })
+                .then(response =>{
+                    return response.json()
+                })
+                .then(data => {
+                    const sid = data["message"]; const Iserror = data["error"];
+                    if(!Iserror){
+                        window.location.href = '/edit_report/' + sid;
+                    }
+                    else{
+                        alert(sid);
+                    }
+                }).catch(error =>{console.error('Error', error)})
+            }
+            else{
+                console.log('Cancelled!')
+            }
+        });
+
+        // Function to fade out and remove flashed messages
+
+        function removeFlashMessages() {
+            var flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                message.classList.add('fade-out');
+            });
+
+            setTimeout(function() {
+                flashMessages.forEach(function(message) {
+                    message.remove();
+                });
+            }, 500); // Adjust the duration (in milliseconds) as needed
+        }
+        setTimeout(removeFlashMessages, 5000);
+
+        
+    </script>
+</body>
+</html>

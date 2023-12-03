@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body>
+	<img src="{{url_for('static', filename='badge_logo.jpg')}}" alt="school-logo">
+	<div id="headers-report">
+		<h2 id="school-name">John Rhoda School</h2>
+    	<h5>(Nursery & Primary)</h5>
+    	<h4 id="address">9/11c Ibukun Omosehin Avenue Alimosho, Lagos</h4>
+    	<h4 id="report-text">CONTINUOUS ASSESSMENT REPORT: <span>1<sup>st</sup>TERM 2023/24</span></h4>
+	</div>
+	<div id='student-details-report'>
+		{% for key, value in students.items() %}
+        	<p>{{key}}: <span>{{value}}</span></p>
+        {% endfor %}
+	</div>
+	<div>
+		<table>
+        <thead>
+            <tr>
+                <th>SUBJECT</th>
+                <th>TEST(40)</th>
+                <th>EXAM(60)</th>
+                <th>TOTAL(100)</th>
+                <th>GRADE</th>
+                <th>REMARKS</th>
+            </tr>
+        </thead>
+        <tbody>
+        	{% for subject, test, exam, total, grade, remark in reports %}
+            	<tr>
+                	<td data-class="body-row">{{subject}}</td>
+                	<td data-class="body-row">{{test}}</td>
+                	<td data-class="body-row">{{exam}}</td>
+                	<td data-class="body-row">{{total}}</td>
+                	<td data-class="body-row" class="grade">{{grade}}</td>
+                	<td data-class="body-row">{{remark}}</td>
+                	<td data-class="body-row"><button class="delete-button" data-name="{{subject}}">X</button></td>
+            	</tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+    	<tr>
+        	{% for key, value in student_per.items() %}
+        		<td class=bottom-report>{{key}}: {{value}}</td>      	
+        	{% endfor %}
+        </tr>
+    </table>
+	</div>
+	<div>
+		<img src="{{url_for('static', filename='stamp.jpg')}}" alt="stamp-logo" style="width:50px; height: 50px; display: block;">
+	</div>
+	<div class="performance-info">
+		{% for key, value in general_per.items() %}
+        	<p class="reports-2">{{key}}: <span>{{value}}</span></p>
+        {% endfor %}
+        <p class="reports-2">NEXT TERM BEGINS:</p>
+	</div>
+	<button id="back-class">Back</button>
+	<button class="print-button">Print Report Card</button>
+	<script type="text/javascript">
+		const deleteButtons = document.querySelectorAll('.delete-button');
+		const studentPerformance = document.querySelectorAll('.bottom-report');
+		const grades = document.querySelectorAll('.grade');
+		const gradeArr = {'A':"gold", 'B':'green', 'C':'blue', 'D': "brown", 'F':"red"};
+		
+		grades.forEach(grade => {
+			grade.style.color = gradeArr[grade.innerText];
+			grade.style.fontWeight = 'bold';
+		})
+
+		studentPerformance.forEach(perf =>{
+			const text = perf.innerText.split(":")
+			const left = text[0]; const right = text[1].trimStart()
+			if(left == "PERCENTAGE"){
+				perf.innerText = `PERCENTAGE: ${right}%`
+			}
+			else if(left == "GRADE"){
+				perf.style.color = gradeArr[right];
+			}
+		})
+
+		deleteButtons.forEach(button=>{
+			button.addEventListener('click', event =>{
+				const columnName = event.target.dataset.name;
+				const Id = {{id_}}
+				var userResponse = window.confirm("Do You Want To Remove This Subject?")
+				if(userResponse == true){
+					fetch(`/view_report/${Id}`,{
+						method:"DELETE",
+						headers:{"Content-Type":"application/json"},
+						body:JSON.stringify({"subject":columnName})
+					})
+					.then(response =>{
+						return response.json()
+					})
+					.then(data =>{
+						console.log(data["message"]);
+						fetch(`/view_report/${Id}`,{
+							method:"GET"
+						})
+						window.location.href = '/view_report/' + Id;
+					}).catch(error => {
+						console.log("Error:", error);
+					})
+				}
+				else{
+					console.log("Canceled");
+				}
+			})
+		})
+		const allCols = [...document.querySelectorAll("[data-class='body-row']")];
+		const lenAllCols = allCols.length; 
+		const allRows = document.querySelectorAll("tr").length - 2;
+		const perRow = lenAllCols / allRows;
+
+		const eachRow = [];
+		for(let i=0; i < lenAllCols; i += perRow){
+			eachRow.push(allCols.slice(i, perRow+i));
+		}
+        
+        const back = document.getElementById('back-class');
+        const studentDet = "{{ students }}".split("&#39;");
+        let classname = "";
+        for(let i=0; i < studentDet.length; i++){
+        	if(i == 7){classname = studentDet[i]; break;}
+        }
+
+        back.addEventListener("click", ()=>{
+        	window.location.href = `/class/${classname}`;
+        });
+
+        const printButton = document.querySelector('.print-button');
+		printButton.addEventListener('click', ()=>{
+        	window.onbeforeprint = function () {
+            	printButton.style.display = 'none';
+            	eachRow.forEach(row =>{
+            		row[row.length - 1].style.display = 'none';
+            	})
+            	back.style.display = 'none';
+        	};
+
+        	// Show the button again if the print operation is canceled
+        	window.onafterprint = function () {
+            	printButton.style.display = "block";
+            	eachRow.forEach(row =>{
+            		row[row.length - 1].style.display = "block";
+            	})
+            	back.style.display = 'block';
+        	};
+        	window.print();
+
+        // Trigger the print dialog
+   	 	})
+	</script>
+</body>
+</html>

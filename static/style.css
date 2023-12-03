@@ -1,0 +1,426 @@
+/* static/style.css */
+body, html {
+    height: 100vh;
+    margin: 0;
+    width: 100vw;
+    /* background-color: #e9d68e7a; */
+}
+#main-header{
+    font-display: block;
+    margin-left: 37px;
+    font-size: 26px;
+}
+.container-options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh; /* Use 100% of the viewport height */
+}
+
+.button-container {
+    margin-top: 10px;
+}
+
+.add-button, .view-button {
+    padding: 12px 17px;
+    font-size: 13px;
+    margin-top: 10px;
+    justify-content: space-between;
+    background-color: #3498db;
+    margin-left: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-button:hover, .view-button:hover {
+    background-color: #2980b9;
+}
+
+
+
+/* Add_student */
+.container-add {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    height: 100vh; /* Use 100% of the viewport height */
+}
+
+#student-info{
+    width: 60vw;
+}
+.flash-messages {
+    margin-top: 8px;
+
+}
+
+.flash-message {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border-radius: 10px;
+    transition: opacity 0.35s ease;
+}
+.fade-out {
+    opacity: 0;
+}
+
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-smooth: always;
+}
+
+select {
+    width: 50vw;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+
+#submit-student{
+    padding: 10px 20px;
+    margin-top: 15px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#submit-student:hover{
+     background-color: #2980b9;
+}
+#backf-button{
+    background-color: darkgoldenrod;
+    color:whitesmoke;
+    border-radius: 4.5px;
+    margin-right: 12px;
+    width: 15px;
+    margin-top: 20px;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-family: cursive;
+    font-size: 15px;
+}
+
+
+
+/* students */
+.students-container{
+    box-shadow: 2px 5px 2px 1.5px;
+    background-color: ghostwhite;
+    display: block;
+    width: 50vw;
+    border-color: whitesmoke;
+    border-radius: 3px;
+    padding: 15px;
+    margin-top: 10px;
+}
+.student-names{
+    text-decoration :none;
+    font-family: cursive;
+    font-smooth: always;
+    list-style-type: none;
+}
+.student-name{
+    font-family: monospace;
+    font-size: 25px;
+    font-kerning: inherit;
+}
+.student-details{
+    text-decoration :none;
+    background-color: green;
+    padding: 3px 5px;
+    color: ghostwhite;
+    margin-top: 4.5px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-family: serif;
+}
+
+
+/* classes */
+.container-classes {
+    font-family: monospace;
+    letter-spacing: 3px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-color: whitesmoke;
+    border-radius: 10px;
+    border-style: groove;
+}
+.class-button{
+    font-display: auto;
+    margin-top: 10px;
+    text-decoration: none;
+    padding: 5px 5px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.backc-button{
+    margin-top: 10px;
+    text-decoration: none;
+    padding: 5px 5px;
+    font-size: 12px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;    
+}
+
+
+/*Login*/
+.container-login {
+    width: 50%;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#password{
+    width: 100%;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#admin {
+    text-align: center;
+    color: #333;
+}
+
+#submit-admin{
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: darkseagreen;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+}
+
+
+/*Edit_Report*/
+/* static/styles.css */
+
+#edit-form-details {
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+    width: 85vw;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#back-class{
+    margin-left: 5px;
+}
+.P-info{
+    font-size: 20px;
+    font-weight: bold;
+    font-family: cursive;
+}
+
+.edit-info {
+    color: #33a;
+    font-style: revert;
+}
+#academic-info, #performance-info, #personal-info{
+    background-color: ghostwhite;
+    font-weight: bolder;
+    margin-left: 5%;
+}
+.edit-labels{
+    font-weight: bold;
+    font-display: fallback;
+    font-size: 16.5px;
+}
+
+input, textarea{
+    width: 50vw;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-color: ghostwhite;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+#edit-button{
+    margin-top: 5px;
+    position: sticky;
+    background-color: springgreen;
+    margin-left: 20vw;
+}
+#toogle-switch{
+    margin-top: 10px;
+    position: sticky;
+    margin-left: 45vw;
+    background-color: purple;
+}
+
+#submit-score{
+    margin-top: 8px;
+    margin-left: 20vw;
+    background-color: greenyellow;
+}
+.blurred{
+    filter: blur(5px);
+}
+.disabled-button {
+    opacity: 0.5; /* Adjust the opacity as needed */
+    cursor: not-allowed;
+}
+
+
+/* Report Card */
+#report-body{
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: purple;
+}
+img{
+    width: 80px;
+    height: 80px;
+    top: 0;
+    border-collapse: collapse;
+    border-style: groove;
+    border-radius: 5px;
+    margin-left: 45vw;
+}
+#headers-report{
+    text-align: center;
+    text-decoration-style: wavy;
+}
+#school-name{
+    color: blue;
+    letter-spacing: 3.5px;
+}
+#address{
+    font-family: cursive;
+}
+#report-text{
+    color: lawngreen;
+    text-decoration: underline;
+}
+#student-details-report{
+    display: flex;
+    flex-direction: row;
+    letter-spacing: 2px;
+    border-radius: 4px;
+    width: 100vw;
+    border-style: groove;
+    background-color: ghostwhite;  
+}
+p{
+    margin: auto;
+}
+span{
+    text-decoration: underline;
+    font-family: cursive;
+    font-weight: bolder;
+    font-size: 16px;
+}
+ table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 20px auto;
+}
+
+table, th, td {
+    border: 2px ridge whitesmoke;
+}
+
+th, td {
+    padding: 5px;
+    text-align: left;
+}
+.delete-button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 4px 4px;
+    cursor: pointer;
+}
+.delete-button:hover{
+    background-color: red;
+}
+.bottom-report{
+    text-align: left;
+    padding:4px;
+    font-family: monospace;
+    letter-spacing: 3px;
+    font-weight: bolder;
+    font-stretch: semi-expanded;
+    font-size: 15px;
+}
+
+.performance-info{
+    font-weight: bold;
+    font-size: 13px;
+    border-style: solid;
+    border-radius: 2px 2px;
+    border-color: whitesmoke;
+    border-collapse: collapse;
+} 
+.reports-2{
+    font-weight: bolder;
+    text-decoration: none;
+    border-style: none;
+    line-height: 15px;
+    padding: 5px;
+    margin: 10px;
+    font-kerning: auto;
+    letter-spacing: 1.5px;
+}
+.print-button{
+    margin-left: 20vw;
+}   
